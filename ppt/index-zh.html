@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cheat on Content — 内容创作者的 AI 系统</title>
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="stylesheet" href="assets/base.css">
+<link rel="stylesheet" href="assets/animations/animations.css">
+<style>
+.tpl-coc {
+  --bg:#0d1117;--bg-soft:#161b22;--surface:#161b22;--surface-2:#1c2230;
+  --border:rgba(139,148,158,.22);--border-strong:rgba(139,148,158,.4);
+  --text-1:#e6edf3;--text-2:#8b949e;--text-3:#6e7681;
+  --accent:#7ee787;--accent-2:#79c0ff;--accent-3:#ff7b72;--accent-4:#d2a8ff;
+  --grad:linear-gradient(120deg,#7ee787 0%,#79c0ff 60%,#d2a8ff 100%);
+  --radius:14px;--radius-lg:20px;
+  font-family:'Inter','Noto Sans SC',sans-serif;
+}
+.tpl-coc { background:#0d1117; color:var(--text-1); }
+.tpl-coc .slide { padding:64px 96px; background:#0d1117; color:var(--text-1); }
+.tpl-coc .slide::before {
+  content:""; position:absolute; inset:0;
+  background:
+    radial-gradient(60% 50% at 90% 10%,rgba(121,192,255,.10),transparent 60%),
+    radial-gradient(50% 50% at 10% 90%,rgba(126,231,135,.07),transparent 60%);
+  pointer-events:none; z-index:0;
+}
+.tpl-coc .slide>*{position:relative;z-index:1}
+.tpl-coc .h1{font-size:68px;line-height:1.05;font-weight:800;letter-spacing:-.03em;color:#fff}
+.tpl-coc .h2{font-size:46px;font-weight:700;letter-spacing:-.025em;color:#fff;margin-bottom:0}
+.tpl-coc h3,.tpl-coc h4{color:#fff}
+.tpl-coc .kicker{color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin-bottom:16px}
+.tpl-coc .lede{color:var(--text-2);font-size:20px;line-height:1.6}
+.tpl-coc .accent-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.tpl-coc .speaker{display:flex;align-items:center;gap:14px;margin-top:32px}
+.tpl-coc .speaker .av{width:56px;height:56px;border-radius:50%;background:var(--grad)}
+.tpl-coc .speaker b{display:block;color:#fff;font-size:18px}
+.tpl-coc .speaker span{color:var(--text-3);font-size:13px;font-family:'JetBrains Mono',monospace}
+.tpl-coc .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px}
+.tpl-coc .card-accent{border-top:3px solid var(--accent)}
+.tpl-coc .card-blue{border-top:3px solid var(--accent-2)}
+.tpl-coc .card-purple{border-top:3px solid var(--accent-4)}
+.tpl-coc .card-red{border-top:3px solid var(--accent-3)}
+.tpl-coc .card h4{font-size:17px;margin-bottom:8px;color:#fff}
+.tpl-coc .card p{font-size:15px;color:var(--text-2);line-height:1.55;margin:0}
+.tpl-coc .tag{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--surface-2);border:1px solid var(--border);color:var(--text-2)}
+.tpl-coc .deck-footer{position:absolute;bottom:32px;left:96px;right:96px;display:flex;justify-content:space-between;align-items:center;color:var(--text-3);font-size:13px;font-family:'JetBrains Mono',monospace}
+
+/* 循环图 */
+.cycle-wrap{display:flex;align-items:center;justify-content:center;gap:0;margin-top:32px}
+.cycle-step{display:flex;flex-direction:column;align-items:center;gap:10px;flex:1}
+.cycle-node{width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;border:2px solid var(--border);background:var(--surface);flex-shrink:0}
+.cycle-node.green{border-color:var(--accent);background:rgba(126,231,135,.1)}
+.cycle-node.blue{border-color:var(--accent-2);background:rgba(121,192,255,.1)}
+.cycle-node.purple{border-color:var(--accent-4);background:rgba(210,168,255,.1)}
+.cycle-node.orange{border-color:#f0883e;background:rgba(240,136,62,.1)}
+.cycle-label{font-size:12px;color:var(--text-2);text-align:center;line-height:1.4;max-width:90px}
+.cycle-label b{display:block;color:#fff;font-size:13px;margin-bottom:2px;font-family:'JetBrains Mono',monospace}
+.cycle-arrow{font-size:22px;color:var(--text-3);flex-shrink:0;align-self:center;margin-bottom:32px}
+
+/* 维度 Grid */
+.rubric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:24px}
+.rubric-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 16px}
+.rubric-item:hover{border-color:var(--accent)}
+.rubric-abbr{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;margin-bottom:4px}
+.rubric-name{font-size:13px;color:var(--text-2);line-height:1.4}
+.er{color:#7ee787}.hp{color:#79c0ff}.ql{color:#d2a8ff}.na{color:#f0883e}
+.ab{color:#ffa657}.sr{color:#ff7b72}.sat{color:#56d364}
+
+/* 案例 */
+.example-row{display:flex;align-items:center;gap:20px;padding:18px 0;border-bottom:1px solid var(--border)}
+.example-row:last-child{border:none}
+.example-label{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-3);width:100px;flex-shrink:0}
+.example-val{font-size:18px;font-weight:600;color:#fff}
+.example-delta{font-family:'JetBrains Mono',monospace;font-size:13px;padding:3px 10px;border-radius:6px;background:rgba(126,231,135,.12);color:var(--accent);border:1px solid rgba(126,231,135,.3)}
+
+/* 结语 */
+.big-quote{font-size:40px;font-weight:700;line-height:1.3;color:#fff;border-left:4px solid var(--accent);padding-left:32px;margin:32px 0}
+</style>
+</head>
+<body class="tpl-coc">
+<div class="deck">
+
+  <!-- 1. 封面 -->
+  <section class="slide is-active" data-title="封面">
+    <p class="kicker">content · intelligence · system</p>
+    <h1 class="h1 anim-fade-up">Cheat on<br><span class="accent-text">Content</span></h1>
+    <p class="lede mt-m" style="max-width:560px">一个从每条视频中学习的 AI 系统——让下一次预测比上一次更准。</p>
+    <div class="speaker mt-l">
+      <div class="av"></div>
+      <div><b>Leonie</b><span>LMU 慕尼黑 · Allianz GenAI · 抖音创作者</span></div>
+    </div>
+    <div class="deck-footer">
+      <span class="tag">🇨🇳 中文版</span>
+      <span class="slide-number" data-current="1" data-total="7"></span>
+    </div>
+  </section>
+
+  <!-- 2. 问题 -->
+  <section class="slide" data-title="问题">
+    <p class="kicker">01 · 问题所在</p>
+    <h2 class="h2">为什么有些视频爆了，<br>有些却石沉大海？</h2>
+    <div class="grid g3 mt-l" style="gap:20px">
+      <div class="card card-red anim-fade-up">
+        <h4>🎲 靠感觉</h4>
+        <p>「我觉得这条会火。」有时候对，但无法复制，更无法优化。</p>
+      </div>
+      <div class="card card-red anim-fade-up" style="animation-delay:.1s">
+        <h4>📊 有数据没洞察</h4>
+        <p>播放量、点赞、转发都有——但没人知道<em>为什么</em>这条视频表现好。</p>
+      </div>
+      <div class="card card-accent anim-fade-up" style="animation-delay:.2s">
+        <h4>🧠 Cheat on Content</h4>
+        <p>发布前结构化打分预测，发布后对比数据复盘，逐步建立你自己的规律。</p>
+      </div>
+    </div>
+    <p class="lede mt-l" style="font-size:17px">没人真正知道答案——<span style="color:var(--accent)">直到现在。</span></p>
+    <div class="deck-footer">
+      <span class="tag">问题</span>
+      <span class="slide-number" data-current="2" data-total="7"></span>
+    </div>
+  </section>
+
+  <!-- 3. 核心逻辑 -->
+  <section class="slide" data-title="核心逻辑">
+    <p class="kicker">02 · 核心逻辑</p>
+    <h2 class="h2">每条视频都是一个<br><span class="accent-text">数据点。</span></h2>
+    <div class="grid g2 mt-l" style="align-items:start;gap:32px">
+      <div>
+        <p class="lede">每条发布的视频产生一个数据对：</p>
+        <div style="display:flex;gap:16px;margin-top:24px;align-items:center">
+          <div class="card" style="flex:1;text-align:center;padding:20px">
+            <div style="font-size:36px">🎯</div>
+            <div style="font-size:13px;color:var(--text-3);font-family:'JetBrains Mono',monospace;margin-top:8px">发布前</div>
+            <div style="color:#fff;font-weight:600;margin-top:4px">打分预测</div>
+          </div>
+          <div style="font-size:28px;color:var(--text-3)">+</div>
+          <div class="card" style="flex:1;text-align:center;padding:20px">
+            <div style="font-size:36px">📈</div>
+            <div style="font-size:13px;color:var(--text-3);font-family:'JetBrains Mono',monospace;margin-top:8px">T+3天</div>
+            <div style="color:#fff;font-weight:600;margin-top:4px">真实数据</div>
+          </div>
+          <div style="font-size:28px;color:var(--text-3)">→</div>
+          <div class="card card-accent" style="flex:1;text-align:center;padding:20px">
+            <div style="font-size:36px">🧬</div>
+            <div style="font-size:13px;color:var(--accent);font-family:'JetBrains Mono',monospace;margin-top:8px">积累</div>
+            <div style="color:#fff;font-weight:600;margin-top:4px">你的模型</div>
+          </div>
+        </div>
+        <p class="lede mt-l" style="font-size:17px">数据越多，预测越准。</p>
+      </div>
+      <div>
+        <div class="card card-blue">
+          <h4 style="color:var(--accent-2);font-family:'JetBrains Mono',monospace;font-size:13px;margin-bottom:16px">关键点</h4>
+          <p>这个模型是<strong style="color:#fff">你专属的</strong>——不是通用公式。它学的是什么内容在你的账号上有效，而不是别人的爆款规律。</p>
+          <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap">
+            <span class="tag">✓ 个性化</span>
+            <span class="tag">✓ 可校准</span>
+            <span class="tag">✓ 不骗你</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="deck-footer">
+      <span class="tag">核心逻辑</span>
+      <span class="slide-number" data-current="3" data-total="7"></span>
+    </div>
+  </section>
+
+  <!-- 4. 工作流 -->
+  <section class="slide" data-title="工作流">
+    <p class="kicker">03 · 工作流</p>
+    <h2 class="h2">完整闭环</h2>
+    <div class="cycle-wrap mt-l">
+      <div class="cycle-step anim-fade-up">
+        <div class="cycle-node green">✍️</div>
+        <div class="cycle-label"><b>写稿</b>内容创作</div>
+      </div>
+      <div class="cycle-arrow anim-fade-up" style="animation-delay:.05s">→</div>
+      <div class="cycle-step anim-fade-up" style="animation-delay:.1s">
+        <div class="cycle-node blue">🔮</div>
+        <div class="cycle-label"><b>/cheat-predict</b>盲预测打分</div>
+      </div>
+      <div class="cycle-arrow anim-fade-up" style="animation-delay:.15s">→</div>
+      <div class="cycle-step anim-fade-up" style="animation-delay:.2s">
+        <div class="cycle-node orange">🚀</div>
+        <div class="cycle-label"><b>发布</b>上传视频</div>
+      </div>
+      <div class="cycle-arrow anim-fade-up" style="animation-delay:.25s">→</div>
+      <div class="cycle-step anim-fade-up" style="animation-delay:.3s">
+        <div class="cycle-node purple">🔬</div>
+        <div class="cycle-label"><b>/cheat-retro</b>T+3天复盘</div>
+      </div>
+      <div class="cycle-arrow anim-fade-up" style="animation-delay:.35s">→</div>
+      <div class="cycle-step anim-fade-up" style="animation-delay:.4s">
+        <div class="cycle-node green">⬆️</div>
+        <div class="cycle-label"><b>/cheat-bump</b>升级评分公式</div>
+      </div>
+      <div class="cycle-arrow anim-fade-up" style="animation-delay:.45s">↺</div>
+    </div>
+    <div class="grid g3 mt-l" style="gap:16px">
+      <div class="card" style="padding:16px 20px">
+        <span class="tag" style="background:rgba(121,192,255,.1);border-color:var(--accent-2);color:var(--accent-2)">/cheat-predict</span>
+        <p style="margin-top:10px;font-size:14px">7个维度打分 → 预测播放区间（如"7500–22500，概率45%"）</p>
+      </div>
+      <div class="card" style="padding:16px 20px">
+        <span class="tag" style="background:rgba(210,168,255,.1);border-color:var(--accent-4);color:var(--accent-4)">/cheat-retro</span>
+        <p style="margin-top:10px;font-size:14px">真实数据 + Top评论分析 → 哪里预测对了？哪里错了？</p>
+      </div>
+      <div class="card" style="padding:16px 20px">
+        <span class="tag" style="background:rgba(126,231,135,.1);border-color:var(--accent);color:var(--accent)">/cheat-bump</span>
+        <p style="margin-top:10px;font-size:14px">更新各维度权重 → 下一条预测更准</p>
+      </div>
+    </div>
+    <div class="deck-footer">
+      <span class="tag">写稿 → 预测 → 发布 → 复盘 → 升级</span>
+      <span class="slide-number" data-current="4" data-total="7"></span>
+    </div>
+  </section>
+
+  <!-- 5. 7个维度 -->
+  <section class="slide" data-title="评分维度">
+    <p class="kicker">04 · 评分维度</p>
+    <h2 class="h2">7 个评分维度（Rubric）</h2>
+    <div class="rubric-grid mt-l">
+      <div class="rubric-item anim-fade-up">
+        <div class="rubric-abbr er">ER</div>
+        <div class="rubric-name">情感共鸣<br><span style="font-size:11px;color:var(--text-3)">Emotional Resonance</span></div>
+      </div>
+      <div class="rubric-item anim-fade-up" style="animation-delay:.05s">
+        <div class="rubric-abbr hp">HP</div>
+        <div class="rubric-name">钩子强度<br><span style="font-size:11px;color:var(--text-3)">Hook Potential</span></div>
+      </div>
+      <div class="rubric-item anim-fade-up" style="animation-delay:.1s">
+        <div class="rubric-abbr ql">QL</div>
+        <div class="rubric-name">金句密度<br><span style="font-size:11px;color:var(--text-3)">Quotable Lines</span></div>
+      </div>
+      <div class="rubric-item anim-fade-up" style="animation-delay:.15s">
+        <div class="rubric-abbr na">NA</div>
+        <div class="rubric-name">叙事结构<br><span style="font-size:11px;color:var(--text-3)">Narrativity</span></div>
+      </div>
+      <div class="rubric-item anim-fade-up" style="animation-delay:.2s">
+        <div class="rubric-abbr ab">AB</div>
+        <div class="rubric-name">受众广度<br><span style="font-size:11px;color:var(--text-3)">Audience Breadth</span></div>
+      </div>
+      <div class="rubric-item anim-fade-up" style="animation-delay:.25s">
+        <div class="rubric-abbr sr">SR</div>
+        <div class="rubric-name">社会共振<br><span style="font-size:11px;color:var(--text-3)">Social Resonance</span></div>
+      </div>
+      <div class="rubric-item anim-fade-up" style="animation-delay:.3s">
+        <div class="rubric-abbr sat">SAT</div>
+        <div class="rubric-name">讽刺深度<br><span style="font-size:11px;color:var(--text-3)">Satire Depth</span></div>
+      </div>
+      <div class="rubric-item anim-fade-up" style="animation-delay:.35s;border:1px dashed var(--border);background:transparent;display:flex;flex-direction:column;justify-content:center;align-items:center">
+        <div style="font-size:24px">🔄</div>
+        <div class="rubric-name" style="text-align:center;margin-top:6px">随你的数据<br>持续进化</div>
+      </div>
+    </div>
+    <p class="lede mt-m" style="font-size:16px">每个维度 0–5 分。综合分 = 加权平均。<span style="color:var(--accent)">权重来自你自己的真实数据。</span></p>
+    <div class="deck-footer">
+      <span class="tag">v0 等权起步 → v1 校准 → v2 精准</span>
+      <span class="slide-number" data-current="5" data-total="7"></span>
+    </div>
+  </section>
+
+  <!-- 6. 真实案例 -->
+  <section class="slide" data-title="真实案例">
+    <p class="kicker">05 · 真实案例</p>
+    <h2 class="h2">「语言学习方法论」<br><span style="font-size:28px;color:var(--text-2)">预测 vs 实绩</span></h2>
+    <div class="grid g2 mt-l" style="align-items:start;gap:32px">
+      <div>
+        <div class="example-row">
+          <span class="example-label">预测中枢</span>
+          <span class="example-val">15,000 播放</span>
+          <span class="tag">命中区间</span>
+        </div>
+        <div class="example-row">
+          <span class="example-label">实际播放</span>
+          <span class="example-val">24,000 播放</span>
+          <span class="example-delta">+60%</span>
+        </div>
+        <div class="example-row">
+          <span class="example-label">收藏率</span>
+          <span class="example-val">2.85%</span>
+          <span style="font-size:13px;color:var(--accent)">↑ 极高</span>
+        </div>
+        <div class="example-row">
+          <span class="example-label">分享率</span>
+          <span class="example-val">0.38%</span>
+          <span style="font-size:13px;color:var(--accent-3)">↓ 低</span>
+        </div>
+      </div>
+      <div>
+        <div class="card card-accent">
+          <h4>💡 这条得到的洞察</h4>
+          <p>工具押注的是「金句→转发→破圈」路径。<br>实际走的是 <strong style="color:var(--accent)">「干货→收藏→算法推荐」</strong>路径。</p>
+          <p style="margin-top:16px">→ Rubric 更新：教育类内容 <span style="color:var(--accent-2);font-family:'JetBrains Mono',monospace">QL 权重↓</span>，「实用性」维度纳入考量。</p>
+        </div>
+        <div class="card card-blue mt-m">
+          <h4 style="font-size:14px">工具从这条视频学到了什么</h4>
+          <p style="font-size:14px">下一条教育类视频 → 预测更准。这就是闭环的意义。</p>
+        </div>
+      </div>
+    </div>
+    <div class="deck-footer">
+      <span class="tag">复盘 · 2026-06-04</span>
+      <span class="slide-number" data-current="6" data-total="7"></span>
+    </div>
+  </section>
+
+  <!-- 7. 结语 -->
+  <section class="slide" data-title="结语">
+    <p class="kicker">06 · 结语</p>
+    <div class="big-quote anim-fade-up">
+      「工具跟着你学——<br>不是替你学。」
+    </div>
+    <div class="grid g3 mt-l" style="gap:20px">
+      <div class="card" style="text-align:center;padding:24px">
+        <div style="font-size:36px">🌱</div>
+        <div style="color:#fff;font-weight:600;margin-top:12px">冷启动期</div>
+        <div style="font-size:14px;color:var(--text-2);margin-top:6px">v0 等权 Rubric，精度 ±50%。正常，不是失败。</div>
+      </div>
+      <div class="card card-accent" style="text-align:center;padding:24px">
+        <div style="font-size:36px">📊</div>
+        <div style="color:#fff;font-weight:600;margin-top:12px">N = 10+</div>
+        <div style="font-size:14px;color:var(--text-2);margin-top:6px">预测开始可信，Rubric 完成第一次校准。</div>
+      </div>
+      <div class="card card-blue" style="text-align:center;padding:24px">
+        <div style="font-size:36px">🎯</div>
+        <div style="color:#fff;font-weight:600;margin-top:12px">N = 20+</div>
+        <div style="font-size:14px;color:var(--text-2);margin-top:6px">真正意义上的「作弊器」——你账号专属的规律。</div>
+      </div>
+    </div>
+    <p class="lede mt-l" style="font-size:16px;text-align:center">当前状态：<span style="color:var(--accent);font-family:'JetBrains Mono',monospace">37 个校准样本 · Rubric v0 · Bump 待进行</span></p>
+    <div class="deck-footer">
+      <span class="tag">#cheat-on-content</span>
+      <span class="slide-number" data-current="7" data-total="7"></span>
+    </div>
+  </section>
+
+</div>
+<script src="assets/runtime.js"></script>
+</body>
+</html>
