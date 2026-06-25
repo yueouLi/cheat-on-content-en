@@ -63,4 +63,4 @@ TrendRadar MCP returns JSON / markdown. After cheat-seed receives it:
 
 If you're a TrendRadar maintainer seeing this adapter doc—thank you for building multi-platform aggregation as an MCP server. cheat-on-content is the "content-production-side downstream" of your project—users use TrendRadar to know what's happening, and use cheat-on-content to turn that into a calibrated content-prediction loop. Complementary, not a replacement.
 
-Cross-links welcome: [github.com/XBuilderLAB/cheat-on-content](https://github.com/XBuilderLAB/cheat-on-content).
+Cross-links welcome: [github.com/yueouLi/cheat-on-content-en](https://github.com/yueouLi/cheat-on-content-en).

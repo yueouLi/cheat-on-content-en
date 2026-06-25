@@ -32,7 +32,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versio
 
 humanizer is **not bundled** into cheat-on-content—the user `git clone`s it themselves to `~/.claude/skills/humanizer/`.
 
-### Fixed — douyin-session runtime path privacy hole (@level5Ninja [#16](https://github.com/XBuilderLAB/cheat-on-content/pull/16))
+### Fixed — douyin-session runtime path privacy hole (@level5Ninja [#16](https://github.com/yueouLi/cheat-on-content-en/pull/16))
 
 **Problem**: the douyin-session adapter wrote `.auth/` (**containing the Douyin login cookie**), debug screenshots, and reports into the **skill source directory** rather than the user's content project—with a symlink install, the user's session credentials would land inside the cheat-on-content repo, at risk of being committed. The meta-logging hook also stored the first 120 chars of every user prompt into `usage.jsonl`, over-collecting.
 
@@ -131,16 +131,9 @@ Concrete landing:
 - **cheat-init Phase 1 first screen synced**: changed from "making content is fundamentally cheating" to "your next piece is already rewriting the you of 3 months from now. The pattern objectively exists; the difference is whether you see it or not. This lets you see it."
 - **GitHub repo description** synced to the recursive version
 
-### Changed — multilingual README split
-
-- `README.md` is now **English by default**—the first screen for international users
-- `docs/README_CN.md` is Simplified Chinese (original README content + fatalism reshape)
-- both get a language switcher at the top (QuantDinger style)
-- logo path + internal links adjusted to relative paths
-
 ### Added — Star History chart
 
-Both READMEs add a [star-history.com](https://star-history.com) chart at the end for community visualization of project momentum.
+README adds a [star-history.com](https://star-history.com) chart at the end for community visualization of project momentum.
 
 ### Changed — de-emphasize Claude Code
 
@@ -199,7 +192,7 @@ The user's real workflow: finish a draft → **often ad-lib the script while fil
 
 The v2 system makes "post-shoot script change" a first-class citizen: v1 stays as the archive, v2 re-judges based on the actual filmed script, and diff(v1, v2) itself becomes strong evidence for rubric upgrades (the user rewrote the script to be higher ER → the tool learns this user's ER threshold is inconsistent with the current formula). The blind-prediction principle is preserved: v2 is still completed before publishing, with no play data to "cheat" with.
 
-### Added — Codex install compatibility (@songth1ef [#6](https://github.com/XBuilderLAB/cheat-on-content/pull/6))
+### Added — Codex install compatibility (@songth1ef [#6](https://github.com/yueouLi/cheat-on-content-en/pull/6))
 
 - **`install.sh --codex`**: installs the root router skill `cheat-on-content` and 13 sub-skills into `~/.codex/skills/`
 - **`install.sh --all`**: installs both the Claude Code and Codex skills
@@ -227,7 +220,7 @@ The state of v0.1.0 users is schema 1.1. If later we change field semantics, del
 
 ### Changed — README rewrite (positioning adjustment after the v0.1.0 ship)
 
-- title: English `Cheat on Content`, subtitle reworded (it was a Chinese tagline at the time)
+- title: `Cheat on Content`, subtitle reworded
 - tagline faces the "cheating" frame head-on: "Making content is fundamentally cheating—whoever sees through the pattern first takes the traffic"
 - added the "but can't ChatGPT / Doubao / DeepSeek do this too?" section—core positioning as "your own ops expert + auto-evolving"
 - removed the early-product warning section (the badge + this CHANGELOG already convey it; repeating is a lack of confidence)

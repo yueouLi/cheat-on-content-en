@@ -16,12 +16,6 @@ Your doubt — predicted too.
 </p>
 
 <p align="center">
-  <strong>English</strong>
-  &nbsp;·&nbsp;
-  <a href="docs/README_CN.md"><strong>简体中文</strong></a>
-</p>
-
-<p align="center">
 <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-v0.1.0-orange" alt="Version"></a>
 &nbsp;
 <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
@@ -107,8 +101,8 @@ General LLMs help everyone. This helps **your** account.
 ## 📦 Install
 
 ```bash
-git clone https://github.com/XBuilderLAB/cheat-on-content.git
-cd cheat-on-content
+git clone https://github.com/yueouLi/cheat-on-content-en.git
+cd cheat-on-content-en
 bash install.sh
 ```
 
@@ -157,8 +151,8 @@ Full workflow + sub-skill details: see [SKILL.md](SKILL.md).
 
 ## 📈 Star History
 
-<a href="https://star-history.com/#XBuilderLAB/cheat-on-content&Date">
-  <img src="https://api.star-history.com/svg?repos=XBuilderLAB/cheat-on-content&type=Date" alt="Star History Chart" width="720">
+<a href="https://star-history.com/#yueouLi/cheat-on-content-en&Date">
+  <img src="https://api.star-history.com/svg?repos=yueouLi/cheat-on-content-en&type=Date" alt="Star History Chart" width="720">
 </a>
 
 ---
